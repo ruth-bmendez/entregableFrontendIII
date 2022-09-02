@@ -1,3 +1,4 @@
+import { useState } from 'react';
 
 // El componente Item no tiene componentes hijos.
 // ESTADO: Item debe tener un número para almacenar la cantidad de stock, la misma se la defina el padre a la hora de crearlo.
@@ -9,11 +10,28 @@
 //    h5 > span    (este span debe mostrar la cantidad si es mayor a 0 "agotado" si llega a 0)
 //    button       (este boton debe permitir comprar, pero si la cantidad es menor a 0 debe estar deshabilitado y decir "Sin stock")
 
-export default function Item() {
+export default function Item({ item, total, setTotal }) {
+  const [stock, setStock] = useState(item.stock);
+
+  const buy = () => {
+    if (stock > 0) {
+      setStock(stock - 1);
+      setTotal(total + 1);
+    }
+  }
 
   return (
     <div className='producto'>
-      {/* maquetar Item aquí */}
+      <h3>{item.producto.nombre}</h3>
+      <p>{item.producto.descripcion}</p>
+      <h5>En stock: {stock || <span> agotado</span>}</h5>
+      <button
+        onClick={buy}
+        disabled={stock <= 0}
+      >
+        {stock > 0 ? 'COMPRAR' : 'SIN STOCK'}
+      </button>
     </div>
   )
+
 }
